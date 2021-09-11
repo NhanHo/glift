@@ -52,6 +52,8 @@ glift.rules.problems = {
 
       // For each path, we evaluate if each path has the possibility of being
       // correct.
+      if (flatPaths.length > 1 || (flatPaths.length == 1 && flatPaths[0].length > 1))
+        return problemResults.INDETERMINATE;
       for (var i = 0; i < flatPaths.length; i++) {
         var path = flatPaths[i];
         var newmt = movetree.getFromNode(movetree.node());
@@ -72,15 +74,15 @@ glift.rules.problems = {
       }
 
       if (successTracker[problemResults.CORRECT] &&
-          !successTracker[problemResults.INCORRECT]) {
+        !successTracker[problemResults.INCORRECT]) {
         if (movetree.properties().matches(conditions)) {
           return problemResults.CORRECT;
         } else {
           return problemResults.INDETERMINATE;
         }
       } else if (
-          successTracker[problemResults.CORRECT] &&
-          successTracker[problemResults.INCORRECT]) {
+        successTracker[problemResults.CORRECT] &&
+        successTracker[problemResults.INCORRECT]) {
         return problemResults.INDETERMINATE;
       } else {
         return problemResults.INCORRECT;
@@ -103,7 +105,7 @@ glift.rules.problems = {
     for (var i = 0; i < nextMoves.length; i++) {
       movetree.moveDown(i);
       if (glift.rules.problems.positionCorrectness(movetree, conditions)
-          !== INCORRECT) {
+        !== INCORRECT) {
         correctNextMoves.push(nextMoves[i]);
       }
       movetree.moveUp(); // reset the position
